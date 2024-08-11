@@ -1,9 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { isValidElement, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaUpload, FaTrash } from "react-icons/fa";
 import { useActionState } from "react";
 import axios from "axios";
+import { Input } from "./ui/input";
+import { BackgroundBeams } from "./ui/background-beams";
+import { Cover } from "./ui/cover";
+import { FileUpload } from "./ui/file-upload";
+import { FollowerPointerCard } from "./ui/following-pointer";
+import Footer from "./Footer";
+import { ConfettiFireworks } from "./ui/confettiFireworks";
 import Loader from "./Loader";
+import Header from "./Header";
 const FrontPageGenerator = () => {
   const {
     register,
@@ -12,6 +20,15 @@ const FrontPageGenerator = () => {
     watch,
     formState: { errors },
   } = useForm();
+
+  const BottomGradient = () => {
+    return (
+      <>
+        <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
+        <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
+      </>
+    );
+  };
 
   const [preview, setPreview] = useState(null);
   const [logoFile, setLogoFile] = useState(null);
@@ -159,128 +176,146 @@ const FrontPageGenerator = () => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row space-y-8 lg:space-y-0 lg:space-x-8 p-8 bg-gray-50 min-h-screen">
-      {/* Form Section */}
-      <div className="w-full lg:w-1/2 bg-white  p-8 pt-3 shadow-md rounded-lg border border-gray-200">
-        <h2 className="text-2xl font-semibold mb-6 text-gray-800">
-          Front Page Form
-        </h2>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {[
-            { label: "College Name", name: "collegeName", type: "text" },
-            { label: "Subject Name", name: "subjectName", type: "text" },
-            { label: "Subject Code", name: "subjectCode", type: "text" },
-            {
-              label: "Upload Logo",
-              name: "logo",
-              type: "file",
-              required: true,
-            },
-            { label: "Professor Name", name: "professorName", type: "text" },
-            { label: "Branch Name", name: "branchName", type: "text" },
-            { label: "Student Name", name: "studentName", type: "text" },
-            { label: "Semester", name: "semester", type: "text" },
-            { label: "Enrollment No.", name: "enrollmentNo", type: "text" },
-          ].map(({ label, name, type, required }) => (
-            <div key={name} className="flex flex-col">
-              <label className="text-sm font-medium text-gray-700 mb-2">
-                {label}
-              </label>
-              <input
-                {...register(name, {
-                  required: required ? "This field is required" : false,
-                })}
-                type={type}
-                className={`p-3 border border-gray-300 rounded-md shadow-sm bg-white focus:border-gray-500 focus:ring-1 focus:ring-gray-500 transition ease-in-out duration-200 ${
-                  type === "file"
-                    ? "file:py-2 file:px-4 file:border file:border-gray-300 file:rounded-md file:text-sm file:bg-gray-50"
+    <div>
+      <Header />
+
+      <div className="flex flex-col lg:flex-row space-y-8 lg:space-y-0 lg:space-x-8 p-8 bg-black text-white min-h-screen">
+        {/* Form Section */}
+        <div className="w-full lg:w-1/2 bg-transparent p-8 cursor-none shadow-md rounded-lg border border-gray-200 z-10  overflow-hidden">
+          <FollowerPointerCard>
+            <h2 className="text-2xl font-semibold mb-6 text-white">
+              Front Page Form
+            </h2>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              {[
+                { label: "College Name", name: "collegeName", type: "text" },
+                { label: "Subject Name", name: "subjectName", type: "text" },
+                { label: "Subject Code", name: "subjectCode", type: "text" },
+                {
+                  label: "Upload Logo",
+                  name: "logo",
+                  type: "file",
+                  required: true,
+                },
+                {
+                  label: "Professor Name",
+                  name: "professorName",
+                  type: "text",
+                },
+                { label: "Branch Name", name: "branchName", type: "text" },
+                { label: "Student Name", name: "studentName", type: "text" },
+                { label: "Semester", name: "semester", type: "text" },
+                { label: "Enrollment No.", name: "enrollmentNo", type: "text" },
+              ].map(({ label, name, type, required }) => (
+                <div key={name} className="flex flex-col">
+                  <label className="text-sm font-medium text-white mb-2">
+                    {label}
+                  </label>
+                  <Input
+                    {...register(name, {
+                      required: required ? "This field is required" : false,
+                    })}
+                    type={type}
+                    className={`p-3  border border-gray-300 rounded-md shadow-sm bg-white focus:border-gray-500 focus:ring-1 focus:ring-gray-500 transition ease-in-out duration-200 ${
+                      type === "file"
+                        ? "file:py-[0.4rem] file:px-4 file:border items-center file file:border-gray-300 file:rounded-md file:text-sm file:bg-gray-500 file:my-[-20px]   "
+                        : ""
+                    }`}
+                  />
+                  {errors[name] && (
+                    <span className="text-red-600 text-sm mt-1">
+                      {errors[name].message}
+                    </span>
+                  )}
+                  {type === "file" && logoFile && (
+                    <button
+                      type="button"
+                      className="mt-2 flex items-center text-red-600 hover:text-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 transition ease-in-out duration-200"
+                      onClick={() => {
+                        setValue("logo", null);
+                      }}
+                    >
+                      <FaTrash className="mr-2" /> Remove
+                    </button>
+                  )}
+                </div>
+              ))}
+
+              <button
+                type="submit"
+                className={`group/btn w-full text-white rounded-md h-10 font-medium ${
+                  !logo ||
+                  logo.length === 0 ||
+                  !submitterByName ||
+                  submitterByName.length == 0
+                    ? "opacity-50 cursor-not-allowed"
                     : ""
                 }`}
-              />
-              {errors[name] && (
-                <span className="text-red-600 text-sm mt-1">
-                  {errors[name].message}
-                </span>
-              )}
-              {type === "file" && logoFile && (
+                disabled={
+                  !logo ||
+                  logo.length === 0 ||
+                  !submitterByName ||
+                  submitterByName.length == 0
+                } // Disable the button if no logo is uploadedS
+                onClick={() => {
+                  window.scrollTo(0, 0);
+                  setIsSubmitting(true);
+                }}
+              >
+                <Cover>
+                  <span className="text-neutral-700   dark:text-neutral-300 text-sm">
+                    preview
+                  </span>
+                  <BottomGradient />
+                </Cover>
+              </button>
+            </form>
+          </FollowerPointerCard>
+        </div>
+
+        {/* Preview Section */}
+
+        <div className="w-full lg:w-1/2 bg-transparent p-8 shadow-md rounded-lg border border-gray-200 z-20 overflow-hidden ">
+          <h2 className="text-2xl font-semibold mb-3  text-white">Preview</h2>
+          {isSubmitting ? (
+            <Loader />
+          ) : preview ? (
+            <div className="h-[122vh] cursor-none ">
+              <div className="  h-[100%] cursor-none">
+                <iframe
+                  src={pdfPath + "#toolbar=0&navpanes=0&scrollbar=0"}
+                  height="100%"
+                  width="100%"
+                  type="application/pdf"
+                  className="cursor-none"
+                />
+              </div>
+
+              <div className="flex space-x-4 mt-5">
+                <button
+                  className="w-full bg-gray-800 text-white py-3 px-6 rounded-lg shadow-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 transition ease-in-out duration-200"
+                  onClick={handleDownload} // Trigger download when clicked
+                >
+                  <ConfettiFireworks />
+                </button>
                 <button
                   type="button"
-                  className="mt-2 flex items-center text-red-600 hover:text-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 transition ease-in-out duration-200"
-                  onClick={() => {
-                    setValue("logo", null);
-                  }}
+                  className="w-full bg-red-600 text-white py-3 px-6 rounded-lg shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition ease-in-out duration-200"
+                  onClick={handleRemoveFile}
                 >
-                  <FaTrash className="mr-2" /> Remove
+                  <FaTrash className="inline-block mr-2" /> Remove File
                 </button>
-              )}
+              </div>
             </div>
-          ))}
-          <button
-            type="submit"
-            className={`w-full bg-gray-800 text-white py-3 px-6 rounded-lg shadow-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 transition ease-in-out duration-200 ${
-              !logo ||
-              logo.length === 0 ||
-              !submitterByName ||
-              submitterByName.length == 0
-                ? "opacity-50 cursor-not-allowed"
-                : ""
-            }`}
-            disabled={
-              !logo ||
-              logo.length === 0 ||
-              !submitterByName ||
-              submitterByName.length == 0
-            } // Disable the button if no logo is uploadedS
-            onClick={() => {
-              window.scrollTo(0, 0);
-              setIsSubmitting(true);
-            }}
-          >
-            Preview
-          </button>
-        </form>
+          ) : (
+            <p className="text-gray-500 text-lg">
+              No preview available. Fill out the form and click Preview.
+            </p>
+          )}
+        </div>
       </div>
-
-      {/* Preview Section */}
-
-      <div className="w-full lg:w-1/2 bg-white p-8 pt-0 shadow-md rounded-lg border ">
-        <h2 className="text-2xl font-semibold mb-3 text-gray-800">Preview</h2>
-
-        {isSubmitting ? (
-          <Loader />
-        ) : preview ? (
-          <div className="h-[122vh] ">
-            <div className="  h-[100%]">
-              <iframe
-                src={pdfPath + "#toolbar=0&navpanes=0&scrollbar=0"}
-                height="100%"
-                width="100%"
-                type="application/pdf"
-              />
-            </div>
-
-            <div className="flex space-x-4 mt-16">
-              <button
-                className="w-full bg-gray-800 text-white py-3 px-6 rounded-lg shadow-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 transition ease-in-out duration-200"
-                onClick={handleDownload} // Trigger download when clicked
-              >
-                <FaUpload className="inline-block mr-2" /> Download
-              </button>
-              <button
-                type="button"
-                className="w-full bg-red-600 text-white py-3 px-6 rounded-lg shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition ease-in-out duration-200"
-                onClick={handleRemoveFile}
-              >
-                <FaTrash className="inline-block mr-2" /> Remove File
-              </button>
-            </div>
-          </div>
-        ) : (
-          <p className="text-gray-500 text-lg">
-            No preview available. Fill out the form and click Preview.
-          </p>
-        )}
-      </div>
+      <BackgroundBeams />
+      <Footer />
     </div>
   );
 };
