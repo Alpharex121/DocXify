@@ -164,14 +164,31 @@ const FrontPageGenerator = () => {
     setLogoFile(null);
   };
 
-  const handleDownload = () => {
+  // const handleDownload = () => {
+  //   if (pdfPath) {
+  //     const url = URL.createObjectURL(pdfFile);
+  //     const link = document.createElement("a");
+  //     link.href = url;
+  //     link.download = studName;
+  //     link.click();
+  //     URL.revokeObjectURL(url); // Clean up the object URL
+  //   }
+  // };
+  const handleDownload = async () => {
     if (pdfPath) {
-      const url = URL.createObjectURL(pdfFile);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = studName;
-      link.click();
-      URL.revokeObjectURL(url); // Clean up the object URL
+      // Increment the counter on the server
+      try {
+        await api.post("http://localhost:3000/counter/increment"); // Update the endpoint if necessary
+
+        const url = URL.createObjectURL(pdfFile);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = studName;
+        link.click();
+        URL.revokeObjectURL(url); // Clean up the object URL
+      } catch (error) {
+        console.error("Error incrementing counter:", error);
+      }
     }
   };
 
@@ -181,7 +198,7 @@ const FrontPageGenerator = () => {
 
       <div className="flex flex-col lg:flex-row space-y-8 lg:space-y-0 lg:space-x-8 p-8 bg-black text-white min-h-screen">
         {/* Form Section */}
-        <div className="w-full lg:w-1/2 bg-transparent p-8 cursor-none shadow-md rounded-lg border border-gray-200 z-10  overflow-hidden">
+        <div className="w-full  lg:w-1/2 bg-transparent p-8 cursor-none shadow-md rounded-lg border border-gray-200 z-10  overflow-hidden">
           <FollowerPointerCard>
             <h2 className="text-2xl font-semibold mb-6 text-white">
               Front Page Form
@@ -208,7 +225,7 @@ const FrontPageGenerator = () => {
                 { label: "Enrollment No.", name: "enrollmentNo", type: "text" },
               ].map(({ label, name, type, required }) => (
                 <div key={name} className="flex flex-col">
-                  <label className="text-sm font-medium text-white mb-2">
+                  <label className="text-sm cursor-none font-medium text-white mb-2">
                     {label}
                   </label>
                   <Input
@@ -216,9 +233,9 @@ const FrontPageGenerator = () => {
                       required: required ? "This field is required" : false,
                     })}
                     type={type}
-                    className={`p-3  border border-gray-300 rounded-md shadow-sm bg-white focus:border-gray-500 focus:ring-1 focus:ring-gray-500 transition ease-in-out duration-200 ${
+                    className={`p-3  border border-gray-300 rounded-md shadow-sm bg-white focus:border-gray-500 cursor-none focus:ring-1 focus:ring-gray-500 transition ease-in-out duration-200 ${
                       type === "file"
-                        ? "file:py-[0.4rem] file:px-4 file:border items-center file file:border-gray-300 file:rounded-md file:text-sm file:bg-gray-500 file:my-[-20px]   "
+                        ? "file:py-[0.4rem] file:px-4 file:border items-center file file:border-gray-300 cursor-none file:rounded-md file:text-sm file:bg-gray-500 file:my-[-20px]   "
                         : ""
                     }`}
                   />
@@ -248,7 +265,7 @@ const FrontPageGenerator = () => {
                   logo.length === 0 ||
                   !submitterByName ||
                   submitterByName.length == 0
-                    ? "opacity-50 cursor-not-allowed"
+                    ? "opacity-50 cursor-none"
                     : ""
                 }`}
                 disabled={
