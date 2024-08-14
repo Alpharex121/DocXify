@@ -26,15 +26,21 @@ app.use((req, res, next) => {
   next();
 });
 
+// let counter = 1000;
 app.use(cors(corsOptionss));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 const editFileRouter = require("./Routes/editFile");
 const removeFileRouter = require("./Routes/removeFile");
+const counterRouter = require('./Routes/counter'); 
 
 app.use("/editfile", editFileRouter);
 app.use("/removefile", removeFileRouter);
+app.use("/counter", counterRouter);
+// app.get('/counter', (req, res) => {
+//   res.json({ count: counter });  // This should return the current counter value as JSON
+// });
 
 app.listen(PORT, (req, res) => {
   console.log("Server is running at port " + PORT);
