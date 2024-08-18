@@ -7,7 +7,7 @@ const fs = require("fs");
 router.post("/:id", async (req, res) => {
   const currentFile = req.params.id;
   const fileToDelete =
-    __dirname.slice(0, -6) + "docHandle\\" + currentFile + ".pdf";
+    __dirname.slice(0, -6) + "docHandle\\tmp\\" + currentFile + ".pdf";
   try {
     fs.unlinkSync(fileToDelete);
     console.log("pdf file deleted successfully");
