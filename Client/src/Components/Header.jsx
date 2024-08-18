@@ -7,7 +7,9 @@ const Header = () => {
   useEffect(() => {
     const fetchCounter = async () => {
       try {
-        const response = await fetch("http://localhost:3000/counter");
+        const response = await fetch(
+          "https://doc-xify-7pzf.vercel.app/counter"
+        );
         const data = await response.json();
         setDownloadCount(data.count);
       } catch (error) {

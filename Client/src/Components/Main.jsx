@@ -70,7 +70,7 @@ const FrontPageGenerator = () => {
       setStudentName(e.studentName);
 
       api
-        .post("http://localhost:3000/editfile", {
+        .post("https://doc-xify-7pzf.vercel.app/editfile", {
           collegeName,
           subjectName,
           subjectCode,
@@ -86,7 +86,7 @@ const FrontPageGenerator = () => {
           // console.log(response);
           setCurrentGenerate(response.data);
           api
-            .get("http://localhost:3000/editfile/" + response.data, {
+            .get("https://doc-xify-7pzf.vercel.app/editfile/" + response.data, {
               responseType: "blob",
             })
             .then((response) => {
@@ -120,7 +120,7 @@ const FrontPageGenerator = () => {
       if (currentGenerate) {
         const currentFile = currentGenerate;
         api
-          .post("http://localhost:3000/removefile/" + currentFile, {
+          .post("https://doc-xify-7pzf.vercel.app/removefile/" + currentFile, {
             currentFile,
           })
           .then(() => {
@@ -140,7 +140,7 @@ const FrontPageGenerator = () => {
     if (currentGenerate) {
       const currentFile = currentGenerate;
       api
-        .post("http://localhost:3000/removefile/" + currentFile, {
+        .post("https://doc-xify-7pzf.vercel.app/removefile/" + currentFile, {
           currentFile,
         })
         .then(() => {
@@ -167,7 +167,7 @@ const FrontPageGenerator = () => {
     if (pdfPath) {
       // Increment the counter on the server
       try {
-        await api.post("http://localhost:3000/counter/increment"); // Update the endpoint if necessary
+        await api.post("https://doc-xify-7pzf.vercel.app/counter/increment"); // Update the endpoint if necessary
 
         const url = URL.createObjectURL(pdfFile);
         const link = document.createElement("a");
