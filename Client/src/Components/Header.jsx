@@ -6,21 +6,18 @@ const Header = () => {
 
   useEffect(() => {
     const fetchCounter = async () => {
-      console.log("Fetching counter...");
       try {
-        const response = await fetch('http://localhost:3000/counter');
-        console.log("Response received", response);
+        const response = await fetch("http://localhost:3000/counter");
         const data = await response.json();
-        console.log("Data parsed", data);
         setDownloadCount(data.count);
       } catch (error) {
         console.error("Error fetching download counter:", error);
       }
     };
-  
+
     fetchCounter();
   }, []);
-  
+
   return (
     <>
       <div className="bg-black text-white flex items-center justify-between p-4">
@@ -30,9 +27,7 @@ const Header = () => {
             DocXify
           </p>
         </div>
-        <div className="text-lg font-semibold">
-          Downloads: {downloadCount}
-        </div>
+        <div className="text-lg font-semibold">Downloads: {downloadCount}</div>
       </div>
       <div className="bg-gradient-to-r from-transparent via-gray-500 to-transparent w-full h-[1px]"></div>
     </>

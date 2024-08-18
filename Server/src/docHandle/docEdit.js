@@ -1,90 +1,175 @@
 const fs = require("fs");
-// import { ImageRun, Packer, Paragraph, patchDocument, PatchType } from "docx";
-const docx = require("docx");
-const docxConverter = require("docx-pdf");
-const { format } = require("path");
+const pdfLib = require("pdf-lib");
+const path = require("path");
 
-const editDocx = async (formData) => {
-  // const imageBase64Data = `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`;
+const editPdfFrontPage = async ({
+  collegeName,
+  logoImage,
+  subjectName,
+  subjectCode,
+  professorName,
+  studentName,
+  enrollmentNo,
+  semester,
+  branchName,
+}) => {
+  const newFileName = Math.floor(Math.random() * 1000000000000 + 1);
+  const samplePath = path.join(__dirname, `sample.pdf`);
+  const pdfPath = path.join(__dirname, `${newFileName}.pdf`);
+
+  var binaryString = atob(logoImage);
+  var bytes = new Uint8Array(binaryString.length);
+  for (var i = 0; i < binaryString.length; i++) {
+    bytes[i] = binaryString.charCodeAt(i);
+  }
+  const imageArray = bytes.buffer;
+
   try {
-    console.log(__dirname);
-    console.log(formData.studentName);
-    const doc = await docx.patchDocument(
-      fs.readFileSync(__dirname + "/sample.docx"),
+    const existingPdfBytes = fs.readFileSync(samplePath);
+    const pdfDoc = await pdfLib.PDFDocument.load(existingPdfBytes);
+    const helveticaFont = await pdfDoc.embedFont(
+      pdfLib.StandardFonts.Helvetica
+    );
+    const HelveticaBold = await pdfDoc.embedFont(
+      pdfLib.StandardFonts.HelveticaBold
+    );
+
+    const subjectWidth = HelveticaBold.widthOfTextAtSize(subjectName, 16);
+    const subjectCodeWidth = HelveticaBold.widthOfTextAtSize(subjectCode, 16);
+
+    const wrapText = (text, width, font, fontSize) => {
+      const words = text.split(" ");
+      let line = "";
+      let result = "";
+      let currHeight = 100;
+      for (let n = 0; n < words.length; n++) {
+        const testLine = line + words[n] + " ";
+        const testWidth = font.widthOfTextAtSize(testLine, fontSize);
+        if (testWidth > width) {
+          result += line + "\n";
+          firstPage.drawText(line, {
+            x:
+              firstPage.getWidth() / 2 -
+              HelveticaBold.widthOfTextAtSize(line, 24) / 2,
+            y: height - currHeight,
+            size: 24,
+            font: HelveticaBold,
+          });
+          currHeight += 30;
+          line = words[n] + " ";
+        } else {
+          line = testLine;
+        }
+      }
+      result += line;
+      firstPage.drawText(line, {
+        x:
+          firstPage.getWidth() / 2 -
+          HelveticaBold.widthOfTextAtSize(line, 24) / 2,
+        y: height - currHeight,
+        size: 24,
+        font: HelveticaBold,
+      });
+      return result;
+    };
+
+    const pages = pdfDoc.getPages();
+    const firstPage = pages[0];
+    const { width, height } = firstPage.getSize();
+
+    // Add college name centered at top (adjust Y position)
+    wrapText(collegeName.toUpperCase(), 550, HelveticaBold, 24);
+
+    // Add logo (adjust Y position)
+    const pngImage = await pdfDoc.embedPng(imageArray);
+    const pngDims = pngImage.scale(1);
+
+    firstPage.drawImage(pngImage, {
+      x: width / 2 - pngDims.width / 2,
+      y: height - 200 - pngDims.height,
+      width: pngDims.width,
+      height: pngDims.height,
+    });
+
+    // Add subject name and code (adjust X and Y positions)
+    firstPage.drawText(subjectName.toUpperCase(), {
+      x: firstPage.getWidth() / 2 - subjectWidth / 2,
+      y: height - 440,
+      size: 16,
+      font: HelveticaBold,
+    });
+    firstPage.drawText(subjectCode.toUpperCase(), {
+      x: firstPage.getWidth() / 2 - subjectCodeWidth / 2,
+      y: height - 465,
+      size: 16,
+      font: HelveticaBold,
+    });
+
+    // Add "Submitted To:-" and "Submitted by:-"
+    firstPage.drawText("Submitted To:-", {
+      x: 100,
+      y: height - 530,
+      size: 20,
+      font: HelveticaBold,
+    });
+    firstPage.drawText("Submitted By:-", {
+      x: width - 200,
+      y: height - 530,
+      size: 20,
+      font: HelveticaBold,
+    });
+
+    // Add professor and student names
+    firstPage.drawText(
+      professorName.replace(/(^\w{1})|(\s+\w{1})/g, (letter) =>
+        letter.toUpperCase()
+      ),
       {
-        patches: {
-          college_name_tag: {
-            type: docx.PatchType.DOCUMENT,
-            children: [
-              new docx.Paragraph({
-                text: formData.collegeName,
-                heading: docx.HeadingLevel.HEADING_1,
-              }),
-            ],
-          },
-          subject_name_tag: {
-            type: docx.PatchType.DOCUMENT,
-            children: [new docx.Paragraph({ text: formData.subjectName })],
-          },
-          subject_code_tag: {
-            type: docx.PatchType.DOCUMENT,
-            children: [new docx.Paragraph({ text: formData.subjectCode })],
-          },
-          professor_name_tag: {
-            type: docx.PatchType.DOCUMENT,
-            children: [new docx.Paragraph({ text: formData.professorName })],
-          },
-          student_name_tag: {
-            type: docx.PatchType.DOCUMENT,
-            children: [new docx.Paragraph({ text: formData.studentName })],
-          },
-          semester_tag: {
-            type: docx.PatchType.DOCUMENT,
-            children: [new docx.Paragraph({ text: formData.semester })],
-          },
-          branch_name_tag: {
-            type: docx.PatchType.DOCUMENT,
-            children: [new docx.Paragraph({ text: formData.branchName })],
-          },
-          enrollment_no_tag: {
-            type: docx.PatchType.DOCUMENT,
-            children: [new docx.Paragraph({ text: formData.enrollmentNo })],
-          },
-          logo_tag: {
-            type: docx.PatchType.DOCUMENT,
-            children: [
-              new docx.Paragraph({
-                children: [
-                  new docx.ImageRun({
-                    data: formData.logoImage, // Buffer or base64 image data
-                    transformation: {
-                      width: 200, // Set the width of the logo
-                      height: 200, // Set the height of the logo
-                    },
-                  }),
-                ],
-              }),
-            ],
-          },
-        },
+        x: 100,
+        y: height - 555,
+        size: 16,
+        font: helveticaFont,
+      }
+    );
+    firstPage.drawText(
+      studentName.replace(/(^\w{1})|(\s+\w{1})/g, (letter) =>
+        letter.toUpperCase()
+      ),
+      {
+        x: width - 200,
+        y: height - 555,
+        size: 16,
+        font: helveticaFont,
       }
     );
 
-    const newFileName = Math.floor(Math.random() * 10000000000000000) + 1;
+    // Add enrollment number, semester, and branch
+    firstPage.drawText(enrollmentNo, {
+      x: width - 200,
+      y: height - 580,
+      size: 16,
+      font: helveticaFont,
+    });
+    firstPage.drawText(semester, {
+      x: width - 200,
+      y: height - 605,
+      size: 16,
+      font: helveticaFont,
+    });
+    firstPage.drawText(branchName.toUpperCase(), {
+      x: width - 200,
+      y: height - 630,
+      size: 16,
+      font: helveticaFont,
+    });
 
-    const docxPath = __dirname + "/" + +newFileName + ".docx";
-    // const pdfPath = __dirname + "/" + +newFileName + ".pdf";
-
-    fs.writeFileSync(docxPath, doc);
+    const pdfBytes = await pdfDoc.save();
+    fs.writeFileSync(pdfPath, pdfBytes);
+    console.log("PDF saved successfully:", pdfPath);
     return newFileName;
-    // docxConverter(docxPath, pdfPath, (err, result) => {
-    //   if (err) console.log(err);
-    //   else console.log(result); // writes to file for us
-    //   return result;
-    // });
   } catch (error) {
-    console.error(`Error: ${error}`);
+    console.log("Error while generating PDF:", error);
   }
 };
 
-module.exports = editDocx;
+module.exports = editPdfFrontPage;

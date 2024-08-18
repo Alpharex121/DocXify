@@ -1,17 +1,15 @@
 import React, { isValidElement, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaUpload, FaTrash } from "react-icons/fa";
-import { useActionState } from "react";
 import axios from "axios";
 import { Input } from "./ui/input";
-import { BackgroundBeams } from "./ui/background-beams";
 import { Cover } from "./ui/cover";
-import { FileUpload } from "./ui/file-upload";
 import { FollowerPointerCard } from "./ui/following-pointer";
 import Footer from "./Footer";
 import { ConfettiFireworks } from "./ui/confettiFireworks";
 import Loader from "./Loader";
 import Header from "./Header";
+
 const FrontPageGenerator = () => {
   const {
     register,
@@ -20,15 +18,6 @@ const FrontPageGenerator = () => {
     watch,
     formState: { errors },
   } = useForm();
-
-  const BottomGradient = () => {
-    return (
-      <>
-        <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
-        <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
-      </>
-    );
-  };
 
   const [preview, setPreview] = useState(null);
   const [logoFile, setLogoFile] = useState(null);
@@ -124,7 +113,7 @@ const FrontPageGenerator = () => {
   const onSubmit = (e) => {
     if (logo && logo.length > 0) {
       // e.preventDefault();
-      console.log("Generating new preview: ");
+      // console.log("Generating new preview: ");
       setPreview(e);
       setLogoFile(logo[0]); // Store the first file (assuming single file upload)
 
@@ -205,9 +194,23 @@ const FrontPageGenerator = () => {
             </h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               {[
-                { label: "College Name", name: "collegeName", type: "text" },
-                { label: "Subject Name", name: "subjectName", type: "text" },
-                { label: "Subject Code", name: "subjectCode", type: "text" },
+                {
+                  label: "College Name",
+                  name: "collegeName",
+                  type: "text",
+                  required: true,
+                },
+                {
+                  label: "Subject Name",
+                  name: "subjectName",
+                  type: "text",
+                  required: true,
+                },
+                {
+                  label: "Subject Code",
+                  name: "subjectCode",
+                  type: "text",
+                },
                 {
                   label: "Upload Logo",
                   name: "logo",
@@ -218,11 +221,31 @@ const FrontPageGenerator = () => {
                   label: "Professor Name",
                   name: "professorName",
                   type: "text",
+                  required: true,
                 },
-                { label: "Branch Name", name: "branchName", type: "text" },
-                { label: "Student Name", name: "studentName", type: "text" },
-                { label: "Semester", name: "semester", type: "text" },
-                { label: "Enrollment No.", name: "enrollmentNo", type: "text" },
+                {
+                  label: "Branch Name",
+                  name: "branchName",
+                  type: "text",
+                },
+                {
+                  label: "Student Name",
+                  name: "studentName",
+                  type: "text",
+                  required: true,
+                },
+                {
+                  label: "Semester",
+                  name: "semester",
+                  type: "text",
+                  required: true,
+                },
+                {
+                  label: "Enrollment No.",
+                  name: "enrollmentNo",
+                  type: "text",
+                  required: true,
+                },
               ].map(({ label, name, type, required }) => (
                 <div key={name} className="flex flex-col">
                   <label className="text-sm cursor-none font-medium text-white mb-2">
@@ -283,7 +306,6 @@ const FrontPageGenerator = () => {
                   <span className="text-neutral-700   dark:text-neutral-300 text-sm">
                     preview
                   </span>
-                  <BottomGradient />
                 </Cover>
               </button>
             </form>
@@ -291,33 +313,30 @@ const FrontPageGenerator = () => {
         </div>
 
         {/* Preview Section */}
-
-        <div className="w-full lg:w-1/2 bg-transparent p-8 shadow-md rounded-lg border border-gray-200 z-20 overflow-hidden ">
-          <h2 className="text-2xl font-semibold mb-3  text-white">Preview</h2>
+        <div className="w-full lg:w-1/2 bg-transparent p-8 shadow-md rounded-lg border border-gray-200 z-20 overflow-hidden flex flex-col">
+          <h2 className="text-2xl font-semibold mb-3 text-white">Preview</h2>
           {isSubmitting ? (
             <Loader />
           ) : preview ? (
-            <div className="h-[122vh] cursor-none ">
-              <div className="  h-[100%] cursor-none">
+            <div className="flex-1 flex flex-col h-full ">
+              <div className="relative w-full pb-[56.25%]  sm:h-[88%]">
                 <iframe
                   src={pdfPath + "#toolbar=0&navpanes=0&scrollbar=0"}
-                  height="100%"
-                  width="100%"
-                  type="application/pdf"
-                  className="cursor-none"
+                  className="absolute top-0 left-0 w-full h-[30vh] sm:h-full "
+                  title="PDF Preview"
                 />
               </div>
 
-              <div className="flex space-x-4 mt-5">
+              <div className="flex flex-col sm:flex-row mt-[15vh] space-y-4 sm:space-y-0 sm:space-x-4 sm:mt-5">
                 <button
-                  className="w-full bg-gray-800 text-white py-3 px-6 rounded-lg shadow-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 transition ease-in-out duration-200"
+                  className="w-full sm:w-[50%] bg-gray-800 text-white py-3 px-6 rounded-lg shadow-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 transition ease-in-out duration-200"
                   onClick={handleDownload} // Trigger download when clicked
                 >
                   <ConfettiFireworks />
                 </button>
                 <button
                   type="button"
-                  className="w-full bg-red-600 text-white py-3 px-6 rounded-lg shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition ease-in-out duration-200"
+                  className="w-full sm:w-[50%] bg-red-600 text-white py-3 px-6 rounded-lg shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition ease-in-out duration-200"
                   onClick={handleRemoveFile}
                 >
                   <FaTrash className="inline-block mr-2" /> Remove File
@@ -331,7 +350,6 @@ const FrontPageGenerator = () => {
           )}
         </div>
       </div>
-      <BackgroundBeams />
       <Footer />
     </div>
   );

@@ -10,10 +10,19 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^1.7.3",
+    "@fileforge/client": "^0.1.17",
+    "@pspdfkit/nodejs": "^0.0.5",
+    "axios": "^1.7.4",
+    "body-parser": "^1.20.2",
+    "convert-multiple-files": "^1.2.5",
     "cors": "^2.8.5",
     "docx-pdf": "^0.0.1",
     "express": "^4.19.2",
-    "nodemon": "^3.1.4"
+    "groupdocs-conversion-cloud": "^24.8.0",
+    "libreoffice": "^0.4.5",
+    "libreoffice-convert": "^1.6.0",
+    "nodemon": "^3.1.4",
+    "pdf-lib": "^1.17.1",
+    "pspdfkit": "^2024.5.0"
   }
 }
