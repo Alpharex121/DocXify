@@ -83,7 +83,7 @@ const FrontPageGenerator = () => {
         })
         .then((response) => {
           console.log("file edited successfully.");
-          console.log(response);
+          // console.log(response);
           setCurrentGenerate(response.data);
           api
             .get("http://localhost:3000/editfile/" + response.data, {

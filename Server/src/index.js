@@ -3,7 +3,7 @@ const app = express();
 const cors = require("cors");
 const PORT = 3000 || process.evn.PORT;
 
-const allowedOrigins = ["http://localhost:5173"];
+const allowedOrigins = ["https://doc-xify.vercel.app"];
 
 const corsOptionss = {
   origin: function (origin, callback) {
@@ -33,7 +33,7 @@ app.use(express.urlencoded({ extended: false }));
 
 const editFileRouter = require("./Routes/editFile");
 const removeFileRouter = require("./Routes/removeFile");
-const counterRouter = require('./Routes/counter'); 
+const counterRouter = require("./Routes/counter");
 
 app.use("/editfile", editFileRouter);
 app.use("/removefile", removeFileRouter);
