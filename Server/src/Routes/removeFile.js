@@ -8,7 +8,7 @@ const fs = require("fs");
 router.post("/:id", async (req, res) => {
   const currentFile = req.params.id;
   console.log(currentFile);
-  console.log(path.join(__dirname, "../docHandle/tmp", `${currentFile}.pdf`));
+  console.log(path.join("/tmp/", `${currentFile}.pdf`));
   const fileToDelete = path.join(
     __dirname,
     "../docHandle/tmp",
