@@ -5,8 +5,8 @@ const path = require("path");
 const router = express.Router();
 const vercelEdge = require("@vercel/edge-config");
 
-console.log(process.env.ANOTHER_EDGE_CONFIG);
-const edgeConfig = vercelEdge.createClient(process.env.ANOTHER_EDGE_CONFIG);
+// console.log(process.env.ANOTHER_EDGE_CONFIG);
+// const edgeConfig = vercelEdge.createClient(process.env.ANOTHER_EDGE_CONFIG);
 
 // const filePath = path.join("/tmp/", "counter.json");
 
@@ -31,13 +31,13 @@ const edgeConfig = vercelEdge.createClient(process.env.ANOTHER_EDGE_CONFIG);
 // };
 
 router.get("/", async (req, res) => {
-  const count = await edgeConfig.get("counter");
+  const count = await vercelEdge.get("counter");
   res.json({ count });
 });
 
 router.post("/increment", async (req, res) => {
   try {
-    let count = await edgeConfig.get("counter");
+    let count = await vercelEdge.get("counter");
     const updateEdgeConfig = await fetch(
       `https://api.vercel.com/v1/edge-config/${process.env.CLIENT_ID}/`,
       {
