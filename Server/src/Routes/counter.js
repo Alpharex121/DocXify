@@ -40,6 +40,7 @@ router.post("/increment", async (req, res) => {
   try {
     let count = await vercelEdge.get("counter");
     console.log(process.env.API_KEY_TOKEN + " " + process.env.CLIENT_ID);
+    let newCount = count + 1;
     const updateEdgeConfig = await fetch(
       `https://api.vercel.com/v1/edge-config/${process.env.CLIENT_ID}/items`,
       {
@@ -53,7 +54,7 @@ router.post("/increment", async (req, res) => {
             {
               operation: "update",
               key: "counter",
-              value: count++,
+              value: newCount,
             },
           ],
         }),
