@@ -38,7 +38,7 @@ router.post("/", async (req, res) => {
 });
 router.get("/:id", async (req, res) => {
   const newFileName = req.params.id;
-  const pdfPath = path.join(`tmp/${newFileName}.pdf`);
+  const pdfPath = path.join(`/tmp/${newFileName}.pdf`);
   res.sendFile(pdfPath);
 });
 
