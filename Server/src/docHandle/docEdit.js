@@ -15,7 +15,7 @@ const editPdfFrontPage = async ({
 }) => {
   const newFileName = Math.floor(Math.random() * 1000000000000 + 1);
   const samplePath = path.join(__dirname, `sample.pdf`);
-  const pdfPath = path.join(__dirname, `/tmp/${newFileName}.pdf`);
+  const pdfPath = path.join(`/tmp/${newFileName}.pdf`);
   console.log(pdfPath);
 
   var binaryString = atob(logoImage);
