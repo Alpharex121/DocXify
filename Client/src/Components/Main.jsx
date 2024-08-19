@@ -212,7 +212,7 @@ const FrontPageGenerator = () => {
                   type: "text",
                 },
                 {
-                  label: "Upload Logo",
+                  label: "Upload Logo (PNG Only)",
                   name: "logo",
                   type: "file",
                   required: true,

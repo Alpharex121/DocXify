@@ -7,16 +7,17 @@ const fs = require("fs");
 
 router.post("/:id", async (req, res) => {
   const currentFile = req.params.id;
-  console.log(currentFile);
-  console.log(path.join("/tmp/", `${currentFile}.pdf`));
-  const fileToDelete = path.join("/tmp/", `${currentFile}.pdf`);
 
-  try {
-    fs.unlinkSync(fileToDelete);
-    console.log("pdf file deleted successfully");
-    res.sendStatus(200);
-  } catch (error) {
-    console.log("error deleting pdf file when generating", error);
+  console.log(path.join("/tmp/", `${currentFile}.pdf`));
+  if (currentFile !== "undefined") {
+    try {
+      const fileToDelete = path.join("/tmp/", `${currentFile}.pdf`);
+      fs.unlinkSync(fileToDelete);
+      console.log("pdf file deleted successfully");
+      res.sendStatus(200);
+    } catch (error) {
+      console.log("error deleting pdf file when generating", error);
+    }
   }
 });
 
