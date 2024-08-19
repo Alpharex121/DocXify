@@ -5,8 +5,8 @@ const path = require("path");
 const router = express.Router();
 const vercelEdge = require("@vercel/edge-config");
 
-const edgeConfig = vercelEdge.createClient(process.env.ANOTHER_EDGE_CONFIG);
 console.log(process.env.ANOTHER_EDGE_CONFIG);
+const edgeConfig = vercelEdge.createClient(process.env.ANOTHER_EDGE_CONFIG);
 
 // const filePath = path.join("/tmp/", "counter.json");
 
