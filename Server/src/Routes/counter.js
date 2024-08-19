@@ -32,12 +32,14 @@ const vercelEdge = require("@vercel/edge-config");
 
 router.get("/", async (req, res) => {
   const count = await vercelEdge.get("counter");
+  console.log(count);
   res.json({ count });
 });
 
 router.post("/increment", async (req, res) => {
   try {
     let count = await vercelEdge.get("counter");
+    console.log(process.env.API_KEY_TOKEN + " " + process.env.CLIENT_ID);
     const updateEdgeConfig = await fetch(
       `https://api.vercel.com/v1/edge-config/${process.env.CLIENT_ID}/items`,
       {
