@@ -39,7 +39,7 @@ router.post("/increment", async (req, res) => {
   try {
     let count = await vercelEdge.get("counter");
     const updateEdgeConfig = await fetch(
-      `https://api.vercel.com/v1/edge-config/${process.env.CLIENT_ID}/`,
+      `https://api.vercel.com/v1/edge-config/${process.env.CLIENT_ID}/items`,
       {
         method: "PATCH",
         headers: {
@@ -47,9 +47,13 @@ router.post("/increment", async (req, res) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          operation: "update",
-          key: "counter",
-          value: count++,
+          items: [
+            {
+              operation: "update",
+              key: "counter",
+              value: count++,
+            },
+          ],
         }),
       }
     );
