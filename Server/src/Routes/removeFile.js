@@ -2,14 +2,21 @@ const express = require("express");
 const editDocx = require("../docHandle/docEdit");
 const router = express.Router();
 const docxConverter = require("docx-pdf");
+const path = require("path");
 const fs = require("fs");
 
 router.post("/:id", async (req, res) => {
   const currentFile = req.params.id;
-  const fileToDelete =
-    __dirname.slice(0, -6) + "docHandle\\tmp\\" + currentFile + ".pdf";
+  console.log(currentFile);
+  console.log(path.join(__dirname, "../docHandle/tmp", `${currentFile}.pdf`));
+  const fileToDelete = path.join(
+    __dirname,
+    "../docHandle/tmp",
+    `${currentFile}.pdf`
+  );
+
   try {
-    fs.unlinkSync(fileToDelete);
+    // fs.unlinkSync(fileToDelete);
     console.log("pdf file deleted successfully");
     res.sendStatus(200);
   } catch (error) {

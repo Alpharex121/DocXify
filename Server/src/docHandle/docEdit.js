@@ -16,6 +16,7 @@ const editPdfFrontPage = async ({
   const newFileName = Math.floor(Math.random() * 1000000000000 + 1);
   const samplePath = path.join(__dirname, `sample.pdf`);
   const pdfPath = path.join(__dirname, `tmp\\${newFileName}.pdf`);
+  console.log(pdfPath);
 
   var binaryString = atob(logoImage);
   var bytes = new Uint8Array(binaryString.length);
@@ -53,6 +54,7 @@ const editPdfFrontPage = async ({
               HelveticaBold.widthOfTextAtSize(line, 24) / 2,
             y: height - currHeight,
             size: 24,
+
             font: HelveticaBold,
           });
           currHeight += 30;

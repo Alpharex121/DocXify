@@ -39,7 +39,7 @@ router.post("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   const newFileName = req.params.id;
   const dirName = __dirname.slice(0, -6) + "docHandle\\";
-  const pdfPath = path.join(dirName, `temp\\${newFileName}.pdf`);
+  const pdfPath = path.join(dirName, `tmp\\${newFileName}.pdf`);
   res.sendFile(pdfPath);
 });
 
