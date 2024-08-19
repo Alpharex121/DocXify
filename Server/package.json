@@ -12,11 +12,13 @@
   "dependencies": {
     "@fileforge/client": "^0.1.17",
     "@pspdfkit/nodejs": "^0.0.5",
+    "@vercel/edge-config": "^1.2.1",
     "axios": "^1.7.4",
     "body-parser": "^1.20.2",
     "convert-multiple-files": "^1.2.5",
     "cors": "^2.8.5",
     "docx-pdf": "^0.0.1",
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "groupdocs-conversion-cloud": "^24.8.0",
     "libreoffice": "^0.4.5",
