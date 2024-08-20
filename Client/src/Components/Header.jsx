@@ -24,7 +24,11 @@ const Header = () => {
     <>
       <div className="bg-black text-white flex items-center justify-between ">
         <div className="flex items-center">
-          <img src={logo} alt="DocXify Logo" className="h-[15vh] w-[10vw] " />
+          <img
+            src={logo}
+            alt="DocXify Logo"
+            className="hidden md:block md:h-[15vh] md:w-[10vw] "
+          />
           <div className=" mt-4">
             <p className="font-bold tracking-wide text-3xl text-blue-500">
               DocXify

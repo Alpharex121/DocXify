@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import ContactUs from "./Contactus";
+import arpitProfile from "../assets/profile.jpg";
 const Footer = () => {
   const [isContactModalOpen, setContactModalOpen] = useState(false);
   const [isAboutModalOpen, setAboutModalOpen] = useState(false);
@@ -24,7 +25,7 @@ const Footer = () => {
     {
       name: "Arpit Koshta",
       role: "Backend Devloper",
-      img: "https://ggits-coding-club.vercel.app/assets/placeholder1-eCBIR9oQ.jpeg", // Replace with actual image URL
+      img: arpitProfile, // Replace with actual image URL
       bio: "Crafting innovative solutions, one line of code at a time.",
       social: {
         linkedin: "https://www.linkedin.com/in/arpit-koshta/",
@@ -89,7 +90,7 @@ const Footer = () => {
                   <img
                     src={member.img}
                     alt={member.name}
-                    className="w-24 h-24 rounded-full mx-auto mb-4"
+                    className="w-24 h-24 rounded-full mx-auto mb-4 object-contain"
                   />
                   <h3 className="text-md font-semibold text-center">
                     {member.name}
